@@ -1,17 +1,29 @@
-name: SSH Test
+# 워크 플로우 이름
+name: Java CI with Gradle 
 
+
+# 워크 플로우가 언제 실행 될지를 정한다.
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
+
+# 워크 플로우가 깃 레포에 대한 권한을 읽기 만 가능하게 설정한다.
+permissions:
+  contents: read
+
+
+# 워크플로우에서 할 작업 정의한다.
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Decode key
-        run: |
-          echo "${{ secrets.EC2_KEY }}" | base64 -d > private_key
-          chmod 600 private_key
 
-      - name: Test SSH
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "hostname && whoami"
+    # 위의 빌드작업한 JAR 파일 = 아티팩트를 다운로드
+    steps:
+    - name: Deploy to EC2
+      run: |
+        echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+      
