@@ -43,7 +43,7 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-app1:latest
           docker stop app-container || true
           docker rm app-container || true
-          docker run -d --name app-container -p 8080:8080 eungsu/spring-boot-app1:latest
+          docker run -d --name app-container -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-app1:latest
         EOF
 
   
