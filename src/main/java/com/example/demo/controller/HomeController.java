@@ -18,9 +18,5 @@ public class HomeController {
 		return  "Hello, Spring application";
 	}
 	
-	@GetMapping("/bye")
-	@ResponseBody
-	public String bye() {
-		return "Bye, Bye";
-	}
+	
 }
